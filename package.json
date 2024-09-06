@@ -22,7 +22,8 @@
         "lint": "next lint && yarn eslint **/*.{ts,tsx}",
         "lint:mac": "next lint && yarn eslint '**/*.{ts,tsx}'",
         "type-check": "tsc --project tsconfig.json --pretty --noEmit",
-        "test": "jest"
+        "test": "jest",
+        "template": "chmod +x ./create-template.sh && ./create-template.sh"
     },
     "dependencies": {
         "@tanstack/query-core": "4.35.3",
