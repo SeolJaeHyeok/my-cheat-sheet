@@ -1,5 +1,5 @@
 /**
- * 객체 안의 Falsy 값이 아닌 프로퍼티를 쿼리 스트링으로 변환하는 함수
+ * @description 객체 안의 Falsy 값이 아닌 프로퍼티를 쿼리 스트링으로 변환하는 함수
  *
  * @param {Object | Array} params - 객체 혹은 배열
  * @param {string} prefix - 접두사

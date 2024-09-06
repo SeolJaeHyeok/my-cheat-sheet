@@ -1,7 +1,7 @@
 import { isArray } from '../is-array';
 
 /**
- * 쿼리 스트링을 객체로 변환하는 함수
+ * @description 쿼리 스트링을 객체로 변환하는 함수
  *
  * @param {string} params - 쿼리 스트링 문자열
  * @return {object | string} key-value 형태로 변환된 객체

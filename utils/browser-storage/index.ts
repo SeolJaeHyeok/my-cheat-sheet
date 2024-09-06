@@ -1,5 +1,5 @@
 /**
- * 싱글톤으로 동작하는 브라우저 스토리지를 관리하는 클래스
+ * @description 싱글톤으로 동작하는 브라우저 스토리지를 관리하는 클래스
  */
 
 type TStorage = 'localStorage' | 'sessionStorage';
