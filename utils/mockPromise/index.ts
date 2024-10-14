@@ -6,7 +6,7 @@ type ApiResponse<T> = {
 
 const mockApiRequest = ({
     url,
-    delayPerRequest,
+    delayPerRequest = 300,
 }: {
     url: string | string[];
     delayPerRequest: number;
