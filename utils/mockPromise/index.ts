@@ -1,17 +1,17 @@
 type ApiResponse<T> = {
     success: boolean;
     data: T;
-    error?: string;
+    error?: string | null;
 };
 
-const mockApiRequest = ({
+const mockApiRequest = <T>({
     url,
     delayPerRequest = 300,
 }: {
     url: string | string[];
-    delayPerRequest: number;
-}) => {
-    return new Promise((resolve) => {
+    delayPerRequest?: number;
+}): Promise<ApiResponse<T>> => {
+    return new Promise((resolve, reject) => {
         const requestSuccessProbablity = Math.floor(Math.random() * 100); // 0 ~ 99
         setTimeout(() => {
             // API 실패 확률 10%
@@ -20,14 +20,26 @@ const mockApiRequest = ({
                     success: true,
                     data: `Success Api Request from ${url}`,
                     error: null,
-                });
+                } as ApiResponse<T>);
             } else {
-                resolve({
+                reject({
                     success: false,
                     data: `Failed Api Request from ${url}`,
                     error: null,
-                });
+                } as ApiResponse<T>);
             }
         }, delayPerRequest);
     });
+};
+
+export const singleRequest = async () => {
+    try {
+        const result = await mockApiRequest<{ data: string[] }>({
+            url: 'http://localhost:4000/api',
+        });
+
+        return result;
+    } catch (e: unknown) {
+        throw e;
+    }
 };
