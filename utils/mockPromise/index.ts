@@ -1,6 +1,6 @@
 type ApiResponse<T> = {
     success: boolean;
-    data: T;
+    data: T | null;
     error?: string | null;
 };
 
@@ -15,7 +15,7 @@ const mockApiRequest = <T>({
         const requestSuccessProbablity = Math.floor(Math.random() * 100); // 0 ~ 99
         setTimeout(() => {
             // API 실패 확률 10%
-            if (requestSuccessProbablity < 10) {
+            if (requestSuccessProbablity >= 10) {
                 resolve({
                     success: true,
                     data: `Success Api Request from ${url}`,
@@ -32,14 +32,50 @@ const mockApiRequest = <T>({
     });
 };
 
-export const singleRequest = async () => {
+export const singleRequest = async <T>(url: string) => {
     try {
-        const result = await mockApiRequest<{ data: string[] }>({
-            url: 'http://localhost:4000/api',
+        const result = await mockApiRequest<T>({
+            url,
         });
 
         return result;
     } catch (e: unknown) {
         throw e;
     }
+};
+
+export const multipleRequest = async <T>({
+    urls,
+    maxConcurrency = 3, // 동시에 실행할 작업의 수
+    delayPerRequest = 300,
+}: {
+    urls: string[];
+    maxConcurrency?: number;
+    delayPerRequest?: number;
+}): Promise<ApiResponse<T>[]> => {
+    const results: ApiResponse<T>[] = [];
+    let index = 0;
+
+    const worker = async () => {
+        while (index < urls.length) {
+            const currentIndex = index++;
+            const url = urls[currentIndex];
+            try {
+                const response = await mockApiRequest<T>({ url, delayPerRequest });
+                results[currentIndex] = response;
+            } catch (error) {
+                results[currentIndex] = {
+                    success: false,
+                    data: null,
+                    error: `Failed Api Request from ${url}`,
+                };
+            }
+        }
+    };
+
+    const workers = Array.from({ length: maxConcurrency }, () => worker());
+
+    await Promise.all(workers);
+
+    return results;
 };
