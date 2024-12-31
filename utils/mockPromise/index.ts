@@ -33,15 +33,11 @@ const mockApiRequest = <T>({
 };
 
 export const singleRequest = async <T>(url: string) => {
-    try {
-        const result = await mockApiRequest<T>({
-            url,
-        });
+    const result = await mockApiRequest<T>({
+        url,
+    });
 
-        return result;
-    } catch (e: unknown) {
-        throw e;
-    }
+    return result;
 };
 
 export const multipleRequest = async <T>({
